@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_riverpod_template/features/shared/shared.dart';
 
-class SignUpScreen extends StatelessWidget {
-  const SignUpScreen({super.key});
+class VerifyOtpScreen extends StatelessWidget {
+  const VerifyOtpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class SignUpScreen extends StatelessWidget {
                       context.pop();
                     },
                     icon: const Icon(Icons.arrow_back_rounded,
-                        size: 40, color: Colors.white)),
+                        size: 40, color: Color.fromRGBO(255, 255, 255, 1))),
                 const Spacer(flex: 1),
                 Text('Crear cuenta',
                     style:
@@ -50,7 +50,7 @@ class SignUpScreen extends StatelessWidget {
                 borderRadius:
                     const BorderRadius.only(topLeft: Radius.circular(100)),
               ),
-              child: const _RegisterForm(),
+              child: const _VerifyOtpForm(),
             )
           ],
         ),
@@ -59,68 +59,31 @@ class SignUpScreen extends StatelessWidget {
   }
 }
 
-class _RegisterForm extends StatelessWidget {
-  const _RegisterForm();
+class _VerifyOtpForm extends StatelessWidget {
+  const _VerifyOtpForm();
 
   @override
   Widget build(BuildContext context) {
     final textStyles = Theme.of(context).textTheme;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 50),
-      child: Column(
-        children: [
-          const SizedBox(height: 40),
-          Text('Nueva cuenta', style: textStyles.titleMedium),
-          const SizedBox(height: 40),
+        padding: const EdgeInsets.symmetric(horizontal: 50),
+        child: Column(children: [
+          const SizedBox(height: 50),
+          Text('Introduce el código recibido', style: textStyles.titleMedium),
+          const SizedBox(height: 50),
           const CustomTextFormField(
-            label: 'Nombre de usuario',
-            keyboardType: TextInputType.emailAddress,
-          ),
-          const SizedBox(height: 20),
-          const CustomTextFormField(
-            label: 'Correo',
-            keyboardType: TextInputType.emailAddress,
-          ),
-          const SizedBox(height: 20),
-          const CustomTextFormField(
-            label: 'Contraseña',
-            obscureText: true,
-          ),
-          const SizedBox(height: 20),
-          const CustomTextFormField(
-            label: 'Repita la contraseña',
-            obscureText: true,
-          ),
-          const SizedBox(height: 20),
+              label: 'Codigo Otp', keyboardType: TextInputType.number),
+          const SizedBox(height: 30),
           SizedBox(
               width: double.infinity,
               height: 60,
               child: CustomFilledButton(
-                text: 'Crear',
+                text: 'Verificar',
                 buttonColor: Colors.black,
                 onPressed: () {},
               )),
           const Spacer(flex: 2),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('¿Ya tienes una cuenta?'),
-              
-              const Text('¿Ya tienes una cuenta?'),
-              TextButton(
-                  onPressed: () {
-                    if (context.canPop()) {
-                      return context.pop();
-                    }
-                    context.go('/login');
-                  },
-                  child: const Text('Haz login aquí')),
-              
-            ],
-          ),
-        ],
-      ),
-    );
+        ]));
   }
 }

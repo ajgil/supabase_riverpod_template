@@ -1,3 +1,4 @@
+import 'package:supabase_riverpod_template/features/auth/presentation/screens/verify_otp_screen.dart';
 import 'package:supabase_riverpod_template/presentations/screens/screens.dart';
 import 'package:go_router/go_router.dart';
 
@@ -18,5 +19,11 @@ final appRouter = GoRouter(
       path: '/signup',
       builder: (context, state) => const SignUpScreen(),
     ),
+ 
+    GoRoute(
+      path: '/verify',
+      builder: (context, state) => const VerifyOtpScreen(),
+    ),
+    
   ],
 );
