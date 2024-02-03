@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supabase_riverpod_template/config/router/app_router.dart';
 import 'package:supabase_riverpod_template/config/theme/app_theme.dart';
 
-void main() {
-  runApp(const MyApp());
+
+Future<void> main() async {
+  await Supabase.initialize(
+    url: '',
+    anonKey: '',
+  );
+
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
