@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_riverpod_template/features/auth/presentation/providers/providers.dart';
 import 'package:supabase_riverpod_template/features/shared/shared.dart';
-import 'package:supabase_riverpod_template/onboarding/onboarding.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -17,7 +17,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   final _email = TextEditingController();
   final _password = TextEditingController();
-  final _username = TextEditingController();
+  //final _username = TextEditingController();
 
 // Funcion login
   Future<void> _login() async {
@@ -26,12 +26,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         _isSubmitting = true;
       });
 
-      /*
       await ref.read(authRepositoryProvider).logIn(
             email: _email.text,
             password: _password.text,
           );
-*/
       if (mounted) {
         context.pop();
       }
@@ -42,38 +40,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
       //context.showAlert(e.toString());
     }
-  }
-
-// Funcion create account
-  Future<void> _signUp() async {
-    try {
-      setState(() {
-        _isSubmitting = true;
-      });
-
-      await ref.read(onBoardingRepositoryProvider).signUp(
-            email: _email.text,
-            password: _password.text,
-            username: _username.text,
-          );
-
-      if (mounted) {
-        context.push(
-          '/verify',
-          extra: VerifyOtpParams(
-            email: _email.text,
-            password: _password.text,
-            username: _username.text,
-          ),
-        );
-      }
-    } catch (e) {
-      //context.showAlert(e.toString());
-    }
-
-    setState(() {
-      _isSubmitting = false;
-    });
   }
 
   @override
@@ -144,12 +110,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         children: [
                           const Text('¿No tienes cuenta?'),
                           TextButton(
-                              onPressed: _isSubmitting
-                                  ? null
-                                  : () {
-                                      _signUp();
-                                    },
-                              //onPressed: () => context.push('/signup'),
+                              onPressed: () => context.push('/signup'),
                               child: const Text('Crea una aquí'))
                         ],
                       ),

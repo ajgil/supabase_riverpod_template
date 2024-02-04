@@ -1,13 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_riverpod_template/features/shared/shared.dart';
+import 'package:supabase_riverpod_template/onboarding/onboarding.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
+
+  @override
+  ConsumerState<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends ConsumerState<SignUpScreen> {
+  // propiedades
+  bool _isSubmitting = false;
+
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+  final _username = TextEditingController();
+  // metodos
+  Future<void> _signUp() async {
+    try {
+      setState(() {
+        _isSubmitting = true;
+      });
+
+      await ref.read(onBoardingRepositoryProvider).signUp(
+            email: _email.text,
+            password: _password.text,
+            username: _username.text,
+          );
+
+      if (mounted) {
+        context.push(
+          '/verify',
+          extra: VerifyOtpParams(
+            email: _email.text,
+            password: _password.text,
+            username: _username.text,
+          ),
+        );
+      }
+    } catch (e) {
+      //context.showAlert(e.toString());
+    }
+
+    setState(() {
+      _isSubmitting = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
     final scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
     final textStyles = Theme.of(context).textTheme;
 
@@ -50,77 +96,67 @@ class SignUpScreen extends StatelessWidget {
                 borderRadius:
                     const BorderRadius.only(topLeft: Radius.circular(100)),
               ),
-              child: const _RegisterForm(),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 50),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 40),
+                    Text('Nueva cuenta', style: textStyles.titleMedium),
+                    const SizedBox(height: 40),
+                    const CustomTextFormField(
+                      label: 'Nombre de usuario',
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    const SizedBox(height: 20),
+                    const CustomTextFormField(
+                      label: 'Correo',
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    const SizedBox(height: 20),
+                    const CustomTextFormField(
+                      label: 'Contraseña',
+                      obscureText: true,
+                    ),
+                    const SizedBox(height: 20),
+                    const CustomTextFormField(
+                      label: 'Repita la contraseña',
+                      obscureText: true,
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                        width: double.infinity,
+                        height: 60,
+                        child: CustomFilledButton(
+                          text: 'Crear',
+                          buttonColor: Colors.black,
+                          onPressed: _isSubmitting
+                              ? null
+                              : () {
+                                  _signUp();
+                                },
+                        )),
+                    const Spacer(flex: 2),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('¿Ya tienes una cuenta?'),
+                        TextButton(
+                            onPressed: () {
+                              if (context.canPop()) {
+                                return context.pop();
+                              }
+                              context.go('/login');
+                            },
+                            child: const Text('Haz login aquí')),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             )
           ],
         ),
       ))),
-    );
-  }
-}
-
-class _RegisterForm extends StatelessWidget {
-  const _RegisterForm();
-
-  @override
-  Widget build(BuildContext context) {
-    final textStyles = Theme.of(context).textTheme;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 50),
-      child: Column(
-        children: [
-          const SizedBox(height: 40),
-          Text('Nueva cuenta', style: textStyles.titleMedium),
-          const SizedBox(height: 40),
-          const CustomTextFormField(
-            label: 'Nombre de usuario',
-            keyboardType: TextInputType.emailAddress,
-          ),
-          const SizedBox(height: 20),
-          const CustomTextFormField(
-            label: 'Correo',
-            keyboardType: TextInputType.emailAddress,
-          ),
-          const SizedBox(height: 20),
-          const CustomTextFormField(
-            label: 'Contraseña',
-            obscureText: true,
-          ),
-          const SizedBox(height: 20),
-          const CustomTextFormField(
-            label: 'Repita la contraseña',
-            obscureText: true,
-          ),
-          const SizedBox(height: 20),
-          SizedBox(
-              width: double.infinity,
-              height: 60,
-              child: CustomFilledButton(
-                text: 'Crear',
-                buttonColor: Colors.black,
-                onPressed: () {},
-              )),
-          const Spacer(flex: 2),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('¿Ya tienes una cuenta?'),
-              
-              const Text('¿Ya tienes una cuenta?'),
-              TextButton(
-                  onPressed: () {
-                    if (context.canPop()) {
-                      return context.pop();
-                    }
-                    context.go('/login');
-                  },
-                  child: const Text('Haz login aquí')),
-              
-            ],
-          ),
-        ],
-      ),
     );
   }
 }
