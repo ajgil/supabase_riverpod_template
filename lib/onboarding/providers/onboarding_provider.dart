@@ -1,16 +1,37 @@
-//! 1 - State de este provider, que será un StateNotifierProvider
-
-import 'dart:js_interop';
-
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class OnBoardingFormState {
-  final client = Supabase.instance.client;
+part 'onboarding_provider.g.dart';
+
+// exponer el provider
+@riverpod
+OnBoardingRepository onBoardingRepository(_) => OnBoardingRepository();
+
+class OnBoardingRepository {
+  final _client = Supabase.instance.client;
 
   // declaramos algunos bool para capturar errores
   
+  Future<AuthResponse> signUp({
+    required String email,
+    required String password,
+    required String username,
+  }) async {
+    return _client.auth.signUp(
+      email: email,
+      password: password,
+      data: {'username': username},
+    );
+  }
+
+  Future<AuthResponse> verifyCode({
+    required String email,
+    required String code,
+  }) async {
+    return _client.auth.verifyOTP(
+      email: email,
+      token: code,
+      type: OtpType.signup,
+    );
+  }
 }
-
-//! 2 - Como implementamos un notifier
-
-//! 3 - Como construimos el StateNotifierProvider y como se consume desde fuera 

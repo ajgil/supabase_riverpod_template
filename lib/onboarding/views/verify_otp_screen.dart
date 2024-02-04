@@ -2,8 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_riverpod_template/features/shared/shared.dart';
 
+class VerifyOtpParams {
+  const VerifyOtpParams({
+    required this.email,
+    required this.password,
+    required this.username,
+  });
+
+  final String email;
+  final String password;
+  final String username;
+}
+
+
 class VerifyOtpScreen extends StatelessWidget {
-  const VerifyOtpScreen({super.key});
+  const VerifyOtpScreen({required this.params, super.key});
+
+  final VerifyOtpParams params;
+
 
   @override
   Widget build(BuildContext context) {
