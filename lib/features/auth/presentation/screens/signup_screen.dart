@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:supabase_riverpod_template/features/shared/shared.dart';
 import 'package:supabase_riverpod_template/onboarding/onboarding.dart';
 
+
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
 
@@ -44,12 +45,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         );
       }
     } catch (e) {
-      //context.showAlert(e.toString());
+      context.showAlert(e.toString());
     }
-
-    setState(() {
-      _isSubmitting = false;
-    });
   }
 
   @override

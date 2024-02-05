@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_riverpod_template/features/shared/shared.dart';
+import 'package:supabase_riverpod_template/features/shared/widgets/custom_snackbar.dart';
 
 import '../providers/onboarding_provider.dart';
 
@@ -29,6 +30,28 @@ class VerifyOtpScreen extends ConsumerStatefulWidget {
 class _VerifyOtpScreen extends ConsumerState<VerifyOtpScreen> {
   bool _isSubmitting = false;
   final _code = TextEditingController();
+// reenviar codigo
+  Future<void> _resendCode() async {
+    try {
+      setState(() {
+        _isSubmitting = true;
+      });
+
+      await ref.read(onBoardingRepositoryProvider).signUp(
+          email: widget.params.email,
+          password: widget.params.password,
+          username: widget.params.username);
+      if (mounted) {
+        context.showAlert('Solicitado nuevo codigo OTP');
+        context.go('/');
+      }
+    } catch (e) {
+      context.showAlert(e.toString());
+    }
+    setState(() {
+      _isSubmitting = false;
+    });
+  }
 
 // metodo verificar codigo
   Future<void> _verify() async {
@@ -43,16 +66,15 @@ class _VerifyOtpScreen extends ConsumerState<VerifyOtpScreen> {
           );
 
       if (mounted) {
-        //context.showAlert('Successfully signed up');
+        context.showAlert('Successfully signed up');
         context.go('/');
       }
     } catch (e) {
-      setState(() {
-        _isSubmitting = false;
-      });
-
-      //context.showAlert(e.toString());
+      context.showAlert(e.toString());
     }
+    setState(() {
+      _isSubmitting = false;
+    });
   }
 
   @override
@@ -115,6 +137,15 @@ class _VerifyOtpScreen extends ConsumerState<VerifyOtpScreen> {
                         },
                         label: 'Codigo Otp',
                         keyboardType: TextInputType.number),
+                    const SizedBox(height: 30),
+                    SizedBox(
+                        width: double.infinity,
+                        height: 60,
+                        child: CustomFilledButton(
+                          text: 'Volver a solicitar código',
+                          buttonColor: Colors.grey,
+                          onPressed: _isSubmitting ? null : _resendCode,
+                        )),
                     const SizedBox(height: 30),
                     SizedBox(
                         width: double.infinity,

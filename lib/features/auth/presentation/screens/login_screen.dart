@@ -38,7 +38,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         _isSubmitting = false;
       });
 
-      //context.showAlert(e.toString());
+      context.showAlert(e.toString());
     }
   }
 
