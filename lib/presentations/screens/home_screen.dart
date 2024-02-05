@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_riverpod_template/config/router/app_router.dart';
 import 'package:supabase_riverpod_template/features/auth/presentation/providers/providers.dart';
 import 'package:supabase_riverpod_template/features/shared/shared.dart';
 
@@ -14,7 +15,7 @@ class HomeScreen extends ConsumerWidget {
     // watch
     final user = ref.watch(authUserProvider).asData?.value;
 
-    print(user);
+    //print(user);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Supabase riverpod template App'),
@@ -42,7 +43,8 @@ class HomeScreen extends ConsumerWidget {
                   text: 'Login',
                   buttonColor: Colors.black,
                   onPressed: () {
-                    context.push('/login');
+                    ref.read(appRouterProvider).push('/login');
+                    //context.push('/login');
                   },
                 ),
               ),
