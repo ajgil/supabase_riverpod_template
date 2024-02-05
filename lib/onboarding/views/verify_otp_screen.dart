@@ -28,13 +28,13 @@ class VerifyOtpScreen extends ConsumerStatefulWidget {
 }
 
 class _VerifyOtpScreen extends ConsumerState<VerifyOtpScreen> {
-  bool _isSubmitting = false;
+  bool _isLoading = false;
   final _code = TextEditingController();
 // reenviar codigo
   Future<void> _resendCode() async {
     try {
       setState(() {
-        _isSubmitting = true;
+        _isLoading = true;
       });
 
       await ref.read(onBoardingRepositoryProvider).signUp(
@@ -49,7 +49,7 @@ class _VerifyOtpScreen extends ConsumerState<VerifyOtpScreen> {
       context.showAlert(e.toString());
     }
     setState(() {
-      _isSubmitting = false;
+      _isLoading = false;
     });
   }
 
@@ -57,7 +57,7 @@ class _VerifyOtpScreen extends ConsumerState<VerifyOtpScreen> {
   Future<void> _verify() async {
     try {
       setState(() {
-        _isSubmitting = true;
+        _isLoading = true;
       });
 
       await ref.read(onBoardingRepositoryProvider).verifyCode(
@@ -73,7 +73,7 @@ class _VerifyOtpScreen extends ConsumerState<VerifyOtpScreen> {
       context.showAlert(e.toString());
     }
     setState(() {
-      _isSubmitting = false;
+      _isLoading = false;
     });
   }
 
@@ -144,7 +144,7 @@ class _VerifyOtpScreen extends ConsumerState<VerifyOtpScreen> {
                         child: CustomFilledButton(
                           text: 'Volver a solicitar código',
                           buttonColor: Colors.grey,
-                          onPressed: _isSubmitting ? null : _resendCode,
+                          onPressed: _isLoading ? null : _resendCode,
                         )),
                     const SizedBox(height: 30),
                     SizedBox(
@@ -153,7 +153,7 @@ class _VerifyOtpScreen extends ConsumerState<VerifyOtpScreen> {
                         child: CustomFilledButton(
                           text: 'Verificar',
                           buttonColor: Colors.black,
-                          onPressed: _isSubmitting
+                          onPressed: _isLoading
                               ? null
                               : () {
                                   _verify();

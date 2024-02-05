@@ -43,6 +43,7 @@ class HomeScreen extends ConsumerWidget {
                   text: 'Login',
                   buttonColor: Colors.black,
                   onPressed: () {
+                    // al estar dentro de funciones siempre usamos read, no watch
                     ref.read(appRouterProvider).push('/login');
                     //context.push('/login');
                   },

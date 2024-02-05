@@ -15,7 +15,7 @@ class SignUpScreen extends ConsumerStatefulWidget {
 
 class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   // propiedades
-  bool _isSubmitting = false;
+  bool _isLoading = false;
 
   final _email = TextEditingController();
   final _password = TextEditingController();
@@ -25,7 +25,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   Future<void> _signUp() async {
     try {
       setState(() {
-        _isSubmitting = true;
+        _isLoading = true;
       });
 
       await ref.read(onBoardingRepositoryProvider).signUp(
@@ -137,7 +137,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                         child: CustomFilledButton(
                           text: 'Crear',
                           buttonColor: Colors.black,
-                          onPressed: _isSubmitting
+                          onPressed: _isLoading
                               ? null
                               : () {
                                   _signUp();

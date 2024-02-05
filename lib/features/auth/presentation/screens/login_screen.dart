@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_riverpod_template/config/router/app_router.dart';
 import 'package:supabase_riverpod_template/features/auth/presentation/providers/providers.dart';
 import 'package:supabase_riverpod_template/features/shared/shared.dart';
 
@@ -13,7 +15,7 @@ class LoginScreen extends ConsumerStatefulWidget {
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
 // propiedades
-  bool _isSubmitting = false;
+  bool _isLoading = false;
 
   final _email = TextEditingController();
   final _password = TextEditingController();
@@ -23,22 +25,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Future<void> _login() async {
     try {
       setState(() {
-        _isSubmitting = true;
+        _isLoading = true;
       });
 
       await ref.read(authRepositoryProvider).logIn(
-            email: _email.text,
-            password: _password.text,
+            email: _email.text.trim(),
+            password: _password.text.trim(),
           );
       if (mounted) {
-        context.pop();
+        ref.read(appRouterProvider).pop();
       }
-    } catch (e) {
-      setState(() {
-        _isSubmitting = false;
-      });
-
+    } on AuthException catch (e) {
       context.showAlert(e.toString());
+    } catch (e) {
+      context.showAlert(e.toString());
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -82,13 +86,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       const SizedBox(height: 50),
                       Text('Login', style: textStyles.titleLarge),
                       const SizedBox(height: 90),
-                       CustomTextFormField(
+                      CustomTextFormField(
                         controller: _email,
                         label: 'Correo',
                         keyboardType: TextInputType.emailAddress,
                       ),
                       const SizedBox(height: 30),
-                       CustomTextFormField(
+                      CustomTextFormField(
                         controller: _password,
                         label: 'Contraseña',
                         obscureText: true,
@@ -100,7 +104,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           child: CustomFilledButton(
                             text: 'Entrar',
                             buttonColor: Colors.black,
-                            onPressed: _isSubmitting
+                            onPressed: _isLoading
                                 ? null
                                 : () {
                                     _login();
@@ -112,7 +116,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         children: [
                           const Text('¿No tienes cuenta?'),
                           TextButton(
-                              onPressed: () => context.push('/signup'),
+                              onPressed: () => ref.read(appRouterProvider).push('/signup'),//context.push('/signup'),
                               child: const Text('Crea una aquí'))
                         ],
                       ),
@@ -158,7 +162,7 @@ class _LoginForm extends StatelessWidget {
               child: CustomFilledButton(
                 text: 'Entrar',
                 buttonColor: Colors.black,
-                onPressed: _isSubmitting ? null : () {
+                onPressed: _isLoading ? null : () {
 
                 },
               )),
