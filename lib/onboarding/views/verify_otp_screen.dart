@@ -17,24 +17,22 @@ class VerifyOtpParams {
   final String username;
 }
 
-
 class VerifyOtpScreen extends ConsumerStatefulWidget {
   const VerifyOtpScreen({required this.params, super.key});
 
   final VerifyOtpParams params;
-  
+
   @override
   ConsumerState<VerifyOtpScreen> createState() => _VerifyOtpScreen();
 }
 
 class _VerifyOtpScreen extends ConsumerState<VerifyOtpScreen> {
-bool _isSubmitting = false;
-final _code = TextEditingController();
-
+  bool _isSubmitting = false;
+  final _code = TextEditingController();
 
 // metodo verificar codigo
-    Future<void> _verify() async {
-       try {
+  Future<void> _verify() async {
+    try {
       setState(() {
         _isSubmitting = true;
       });
@@ -46,7 +44,6 @@ final _code = TextEditingController();
 
       if (mounted) {
         //context.showAlert('Successfully signed up');
-
         context.go('/');
       }
     } catch (e) {
@@ -58,16 +55,13 @@ final _code = TextEditingController();
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-        final size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
     final scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
     final textStyles = Theme.of(context).textTheme;
 
-
-return GestureDetector(
+    return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
           body: GeometricalBackground(
@@ -107,39 +101,39 @@ return GestureDetector(
                     const BorderRadius.only(topLeft: Radius.circular(100)),
               ),
               child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 50),
-        child: Column(children: [
-          const SizedBox(height: 50),
-          Text('Introduce el código recibido', style: textStyles.titleMedium),
-          const SizedBox(height: 50),
-          CustomTextFormField(
-              controller: _code,
-              onChanged: (code) {
-                print('Code text field: $code (${code.characters.length})');
-              },
-              label: 'Codigo Otp', keyboardType: TextInputType.number),
-          const SizedBox(height: 30),
-          SizedBox(
-              width: double.infinity,
-              height: 60,
-              child: CustomFilledButton(
-                text: 'Verificar',
-                buttonColor: Colors.black,
-                onPressed: _isSubmitting
+                  padding: const EdgeInsets.symmetric(horizontal: 50),
+                  child: Column(children: [
+                    const SizedBox(height: 50),
+                    Text('Introduce el código recibido ${widget.params.email}',
+                        style: textStyles.titleMedium),
+                    const SizedBox(height: 50),
+                    CustomTextFormField(
+                        controller: _code,
+                        onChanged: (code) {
+                          print(
+                              'Code text field: $code (${code.characters.length})');
+                        },
+                        label: 'Codigo Otp',
+                        keyboardType: TextInputType.number),
+                    const SizedBox(height: 30),
+                    SizedBox(
+                        width: double.infinity,
+                        height: 60,
+                        child: CustomFilledButton(
+                          text: 'Verificar',
+                          buttonColor: Colors.black,
+                          onPressed: _isSubmitting
                               ? null
                               : () {
                                   _verify();
                                 },
                         )),
-              
-          const Spacer(flex: 2),
-        ])),
+                    const Spacer(flex: 2),
+                  ])),
             ),
           ],
         ),
       ))),
     );
-
   }
-  
 }

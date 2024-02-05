@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -17,6 +18,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
 
   final _email = TextEditingController();
   final _password = TextEditingController();
+  final _password2 = TextEditingController();
   final _username = TextEditingController();
   // metodos
   Future<void> _signUp() async {
@@ -103,29 +105,31 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     const SizedBox(height: 40),
                     Text('Nueva cuenta', style: textStyles.titleMedium),
                     const SizedBox(height: 40),
-                     CustomTextFormField(
+                    CustomTextFormField(
                       controller: _username,
-                      onChanged: (code) {
-                print('Code text field: $_username (${_username})');
-              },
+                      onChanged: (username) {
+                        if (kDebugMode) {
+                          print('Code text field: $username ($username)');
+                        }
+                      },
                       label: 'Nombre de usuario',
                       keyboardType: TextInputType.emailAddress,
                     ),
                     const SizedBox(height: 20),
-                     CustomTextFormField(
+                    CustomTextFormField(
                       controller: _email,
                       label: 'Correo',
                       keyboardType: TextInputType.emailAddress,
                     ),
                     const SizedBox(height: 20),
-                     CustomTextFormField(
+                    CustomTextFormField(
                       controller: _password,
                       label: 'Contraseña',
                       obscureText: true,
                     ),
                     const SizedBox(height: 20),
-                     CustomTextFormField(
-                      controller: _password,
+                    CustomTextFormField(
+                      controller: _password2,
                       label: 'Repita la contraseña',
                       obscureText: true,
                     ),
