@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_riverpod_template/features/shared/shared.dart';
+
+import '../providers/onboarding_provider.dart';
 
 class VerifyOtpParams {
   const VerifyOtpParams({
@@ -15,19 +18,56 @@ class VerifyOtpParams {
 }
 
 
-class VerifyOtpScreen extends StatelessWidget {
+class VerifyOtpScreen extends ConsumerStatefulWidget {
   const VerifyOtpScreen({required this.params, super.key});
 
   final VerifyOtpParams params;
+  
+  @override
+  ConsumerState<VerifyOtpScreen> createState() => _VerifyOtpScreen();
+}
+
+class _VerifyOtpScreen extends ConsumerState<VerifyOtpScreen> {
+bool _isSubmitting = false;
+final _code = TextEditingController();
+
+
+// metodo verificar codigo
+    Future<void> _verify() async {
+       try {
+      setState(() {
+        _isSubmitting = true;
+      });
+
+      await ref.read(onBoardingRepositoryProvider).verifyCode(
+            email: widget.params.email,
+            code: _code.text,
+          );
+
+      if (mounted) {
+        //context.showAlert('Successfully signed up');
+
+        context.go('/');
+      }
+    } catch (e) {
+      setState(() {
+        _isSubmitting = false;
+      });
+
+      //context.showAlert(e.toString());
+    }
+  }
+
 
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+        final size = MediaQuery.of(context).size;
     final scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
     final textStyles = Theme.of(context).textTheme;
 
-    return GestureDetector(
+
+return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
           body: GeometricalBackground(
@@ -66,29 +106,17 @@ class VerifyOtpScreen extends StatelessWidget {
                 borderRadius:
                     const BorderRadius.only(topLeft: Radius.circular(100)),
               ),
-              child: const _VerifyOtpForm(),
-            )
-          ],
-        ),
-      ))),
-    );
-  }
-}
-
-class _VerifyOtpForm extends StatelessWidget {
-  const _VerifyOtpForm();
-
-  @override
-  Widget build(BuildContext context) {
-    final textStyles = Theme.of(context).textTheme;
-
-    return Padding(
+              child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 50),
         child: Column(children: [
           const SizedBox(height: 50),
           Text('Introduce el código recibido', style: textStyles.titleMedium),
           const SizedBox(height: 50),
-          const CustomTextFormField(
+          CustomTextFormField(
+              controller: _code,
+              onChanged: (code) {
+                print('Code text field: $code (${code.characters.length})');
+              },
               label: 'Codigo Otp', keyboardType: TextInputType.number),
           const SizedBox(height: 30),
           SizedBox(
@@ -97,9 +125,21 @@ class _VerifyOtpForm extends StatelessWidget {
               child: CustomFilledButton(
                 text: 'Verificar',
                 buttonColor: Colors.black,
-                onPressed: () {},
-              )),
+                onPressed: _isSubmitting
+                              ? null
+                              : () {
+                                  _verify();
+                                },
+                        )),
+              
           const Spacer(flex: 2),
-        ]));
+        ])),
+            ),
+          ],
+        ),
+      ))),
+    );
+
   }
+  
 }

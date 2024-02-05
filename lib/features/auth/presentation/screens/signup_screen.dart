@@ -103,22 +103,29 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     const SizedBox(height: 40),
                     Text('Nueva cuenta', style: textStyles.titleMedium),
                     const SizedBox(height: 40),
-                    const CustomTextFormField(
+                     CustomTextFormField(
+                      controller: _username,
+                      onChanged: (code) {
+                print('Code text field: $_username (${_username})');
+              },
                       label: 'Nombre de usuario',
                       keyboardType: TextInputType.emailAddress,
                     ),
                     const SizedBox(height: 20),
-                    const CustomTextFormField(
+                     CustomTextFormField(
+                      controller: _email,
                       label: 'Correo',
                       keyboardType: TextInputType.emailAddress,
                     ),
                     const SizedBox(height: 20),
-                    const CustomTextFormField(
+                     CustomTextFormField(
+                      controller: _password,
                       label: 'Contraseña',
                       obscureText: true,
                     ),
                     const SizedBox(height: 20),
-                    const CustomTextFormField(
+                     CustomTextFormField(
+                      controller: _password,
                       label: 'Repita la contraseña',
                       obscureText: true,
                     ),

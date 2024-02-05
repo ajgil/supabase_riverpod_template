@@ -82,12 +82,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       const SizedBox(height: 50),
                       Text('Login', style: textStyles.titleLarge),
                       const SizedBox(height: 90),
-                      const CustomTextFormField(
+                       CustomTextFormField(
+                        controller: _email,
                         label: 'Correo',
                         keyboardType: TextInputType.emailAddress,
                       ),
                       const SizedBox(height: 30),
-                      const CustomTextFormField(
+                       CustomTextFormField(
+                        controller: _password,
                         label: 'Contraseña',
                         obscureText: true,
                       ),
