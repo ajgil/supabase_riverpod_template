@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:supabase_riverpod_template/config/router/app_router.dart';
 import 'package:supabase_riverpod_template/features/auth/presentation/providers/providers.dart';
 import 'package:supabase_riverpod_template/features/shared/shared.dart';
