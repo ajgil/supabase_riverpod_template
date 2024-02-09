@@ -12,12 +12,13 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // watch
-    final user = ref.watch(authUserProvider).asData?.value;
+    //final user = ref.watch(authUserProvider).asData?.value;
 
     //print(user);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Supabase riverpod template App'),
+        title: const Text('Supabase riverpod App'),
+        /*
         actions: [
           if (user != null)
             IconButton(
@@ -26,7 +27,9 @@ class HomeScreen extends ConsumerWidget {
               tooltip: 'Logout',
             )
         ],
+        */
       ),
+      /*
       body: SizedBox(
         width: double.infinity,
         height: double.infinity,
@@ -50,6 +53,10 @@ class HomeScreen extends ConsumerWidget {
               ),
           ],
         ),
+      ),
+    */
+    body: const Center(
+        child: Text('dentro'),
       ),
     );
   }
