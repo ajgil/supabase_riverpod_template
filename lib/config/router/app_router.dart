@@ -52,17 +52,28 @@ GoRouter appRouter(AppRouterRef ref) {
 
         print('GoRouter authStatus $loggedIn, location $isGoingTo');
 
-        //if ( isGoingTo == '/splash' && loggedIn == false ) return null;
+        if ( isGoingTo == '/splash' && loggedIn == false ) return '/login';
 
+        if ( isGoingTo == '/login' && loggedIn == false ) return '/login';
+        if ( isGoingTo == '/signup' && loggedIn == false ) return '/signup';
+
+/*
         if (loggedIn == false) {
-          if (isGoingTo == '/login' || isGoingTo == '/register') return null;
+          if (isGoingTo == '/login') return null;
 
           return '/login';
         }
 
+        if (loggedIn == false) {
+          if (isGoingTo == '/signup') return null;
+
+          return '/signup';
+        }
+        */
+if ( isGoingTo == '/splash' && loggedIn == true ) return '/';
         if (loggedIn == true) {
           if (isGoingTo == '/login' ||
-              isGoingTo == '/register' ||
+              isGoingTo == '/signup' ||
               isGoingTo == '/splash') {
             return '/';
           }

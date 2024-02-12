@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:supabase_riverpod_template/config/router/app_router.dart';
-import 'package:supabase_riverpod_template/config/theme/app_theme.dart';
+import 'config/config.dart';
 
 Future<void> main() async {
-  await Supabase.initialize(
-    url: 'https://lbcmuerwfkvbpahbhqgm.supabase.co',
-    anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxiY211ZXJ3Zmt2YnBhaGJocWdtIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODQ3NjkwMzYsImV4cCI6MjAwMDM0NTAzNn0.Dw_tpKp8wkAtFewRU62JvSG7rOvRnPUwfspuJOt3xVA',
-  );
+  await dotenv.load();
+  String supabaseBaseUrl = dotenv.env['URL'] ?? '';
+  String supabaseBaseKey = dotenv.env['ANNON_KEY'] ?? '';
+  await Supabase.initialize(url: supabaseBaseUrl, anonKey: supabaseBaseKey);
 
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const ProviderScope(child: MyApp()));
@@ -21,6 +20,8 @@ class MyApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // print environmet api
+    // print(Environment.url);
     // provider
     final appRouter = ref.watch(appRouterProvider);
 
