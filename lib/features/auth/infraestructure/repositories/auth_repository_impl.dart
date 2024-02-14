@@ -32,7 +32,7 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<UserEntity> signIn({required String email, required String password}) {
+  Future<UserEntity> signIn(String email,  String password) {
     return dataSource.signIn(email, password);
 
   }
