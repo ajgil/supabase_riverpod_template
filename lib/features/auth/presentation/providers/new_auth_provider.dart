@@ -6,17 +6,20 @@ import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 // Provider
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   //! Estos métodos terminan delegando en el repositorio
-   /// Exposes Supabase auth client to allow Auth Controller to subscribe to auth changes
+  /// Exposes Supabase auth client to allow Auth Controller to subscribe to auth changes
 
+  final authRepository =
+      AuthRepositoryImpl(supabase.GoTrueClient as supabase.GoTrueClient);
 
-
-  final authRepository = AuthRepositoryImpl(supabase.GoTrueClient as supabase.GoTrueClient);
-  return AuthNotifier();
+  return AuthNotifier(
+    authRepository: authRepository
+  );
 });
 
 // state notifier
 class AuthNotifier extends StateNotifier<AuthState> {
-  AuthNotifier() : super(AuthState());
+  final AuthRepository authRepository;
+  AuthNotifier({required this.authRepository}) : super(AuthState());
 
   void loginUser(String email, String password) async {}
 
