@@ -17,7 +17,7 @@ abstract class AuthDatasource {
   Future<UserEntity> restoreSession();
 
   // check AuthStatus
-  Future<UserEntity> checAuthStatus(String token);
+  Future<UserEntity> checkAuthStatus(String token);
 
 // SignUp with credentials
 /*

@@ -24,7 +24,7 @@ class AuthDatasourceImpl extends AuthDatasource {
   }
 
   @override
-  Future<UserEntity> checAuthStatus(String token) {
+  Future<UserEntity> checkAuthStatus(String token) {
     // TODO: implement checAuthStatus
     throw UnimplementedError();
   }

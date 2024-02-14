@@ -13,6 +13,6 @@ abstract class AuthRepository {
   Future<UserEntity> restoreSession();
 
   // check AuthStatus
-  Future<UserEntity> checAuthStatus( String token);
+  Future<UserEntity> checkAuthStatus( String token);
 
 }

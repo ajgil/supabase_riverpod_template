@@ -9,12 +9,14 @@ class AuthRepositoryImpl extends AuthRepository {
   final AuthDatasource dataSource;
   
 
-  AuthRepositoryImpl(AuthDatasource? dataSource, this.authClient)
+  AuthRepositoryImpl(this.authClient, 
+    [AuthDatasource? dataSource ]
+    )
       : dataSource = dataSource ?? AuthDatasourceImpl(authClient);
 
   @override
-  Future<UserEntity> checAuthStatus(String token) {
-    return dataSource.checAuthStatus(token);
+  Future<UserEntity> checkAuthStatus(String token) {
+    return dataSource.checkAuthStatus(token);
   }
 
   @override
